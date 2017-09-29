@@ -2,6 +2,8 @@
  * nSpeech
  * nSpeech is screen reader library.
  *
+ * https://github.com/nkhr7/nSpeech/
+ *
  * Copyright 2017, Koichi Yoshimoto
  *
  * Version: 1.0.0
