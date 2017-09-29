@@ -118,8 +118,9 @@ speech.onmark(function(){
 });
 ```
 
-## DEMO
-[https://codepen.io/nkhr7/pen/KzBmpx](https://codepen.io/nkhr7/pen/KzBmpx)
+## Browser
+- Chrome (Latest)
+- Firefox (Latest)
 
 ## TODO
 - Heading and some text adds period. (Because reading to flush)  
