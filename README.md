@@ -102,6 +102,7 @@ var speech = new nSpeech();
 speech.onend(function(){ 
   console.log("onend"); 
 });
+
 // When start.
 speech.onstart(function(){ 
   console.log("onstart"); 
@@ -128,7 +129,3 @@ speech.onmark(function(){
 
 ## License
 Released under the MIT License. See the `LICENSE` file for details
-
-## P.S.
-I am not very good at English. XO  
-I will continue to study English! \\(ツ)/
