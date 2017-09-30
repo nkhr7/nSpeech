@@ -1,4 +1,5 @@
-# nSpeech
+# nSpeech [![Build Status](https://travis-ci.org/nkhr7/nSpeech.svg?branch=master)](https://travis-ci.org/nkhr7/nSpeech) [![Dependency Status](https://gemnasium.com/badges/github.com/nkhr7/nSpeech.svg)](https://gemnasium.com/github.com/nkhr7/nSpeech)
+
 
 nSpeech is screen reader library.  
 nSpeechは[Web Speech API](https://developer.mozilla.org/ja/docs/Web/API/Web_Speech_API)を使用した、スクリーンリーダーライブラリです。
