@@ -1,16 +1,26 @@
 {
   "name": "nSpeech",
   "version": "1.0.0",
-  "description": "Screen reader.",
+  "description": "nSpeech is screen reader javascript library.",
+  "main": "dist/nSpeech.js",
+  "keywords": [
+    "webspeechapi",
+    "nSpeech"
+  ],
+  "homepage": "https://github.com/nkhr7/nSpeech",
   "private": true,
   "scripts": {
-    "build": "gulp"
+    "test": "gulp test"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/nkhr7/nSpeech.git"
   },
-  "author": "Koichi Yoshimoto",
+  "author": {
+    "name": "Koichi Yoshimoto",
+    "url": "https://github.com/nkhr7",
+    "email": "nkhr7.web@gmail.com"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/nkhr7/nSpeech/issues"
@@ -19,6 +29,7 @@
     "browser-sync": "^2.18.13",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^4.0.0",
+    "gulp-jslint": "^1.0.10",
     "gulp-load-plugins": "^1.5.0",
     "gulp-notify": "^3.0.0",
     "gulp-plumber": "^1.1.0",

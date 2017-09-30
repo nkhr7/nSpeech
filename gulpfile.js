@@ -81,9 +81,15 @@ gulp.task('jsmin', function() {
   .pipe(gulp.dest(dir.dist))
 });
 
+gulp.task('jslint', function() {
+  return gulp.src([nSpeech_path])
+  .pipe(plugins.jslint())
+});
+
 
 gulp.task('default', ['watch']);
 
+gulp.task('test', ['jslint']);
 
 gulp.task('dist', function(callback) {
   runSequence(
