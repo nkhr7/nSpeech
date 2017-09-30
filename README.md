@@ -4,6 +4,12 @@
 nSpeech is screen reader library.  
 nSpeechは[Web Speech API](https://developer.mozilla.org/ja/docs/Web/API/Web_Speech_API)を使用した、スクリーンリーダーライブラリです。
 
+## Install
+
+```bash
+$ npm install n-speech
+```
+
 ## Usage
 
 - The initial options use ".speech" class name.  
