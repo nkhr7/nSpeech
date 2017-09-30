@@ -1,5 +1,5 @@
 {
-  "name": "nSpeech",
+  "name": "n-speech",
   "version": "1.0.0",
   "description": "nSpeech is screen reader javascript library.",
   "main": "dist/nSpeech.js",
@@ -8,7 +8,6 @@
     "nSpeech"
   ],
   "homepage": "https://github.com/nkhr7/nSpeech",
-  "private": true,
   "scripts": {
     "test": "gulp test"
   },
