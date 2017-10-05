@@ -51,8 +51,34 @@ $ npm install n-speech
 ```javascript
 // In this case is ID.
 // Other case is class and tag. (ex: '.speech', 'p')
-var speech = new nSpeech('#speech', {
+var example_1 = new nSpeech('#example_1', {
   lang: 'ja-JP'
+});
+
+var example_2 = new nSpeech('.example_2', {
+  lang: 'ja-JP'
+});
+
+var example_3 = new nSpeech('p', {
+  lang: 'ja-JP'
+});
+```
+
+### Override the text selection
+- Able to read the selected text.  
+選択したテキストを読むことができます。
+
+```javascript
+var selectedTexts = new nSpeech();
+var play = document.getElementById('play');
+var stop = document.getElementById('stop');
+
+play.addEventListener('click', function(){
+  speech.playSelection();
+});
+
+stop.addEventListener('click', function(){
+  speech.stopSelection();
 });
 ```
 
@@ -97,10 +123,49 @@ var speech = new nSpeech(options);
 `lang`では以下の以下のリンクにあるセレクトの(ja-JP)などが利用できます。  
 [https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis/getVoices](https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis/getVoices)
 
+
 ## Methods
 
 - The following methods are available.  
 以下のメソッドが使えます。
+
+```javascript
+var speech = new nSpeech();
+
+// play
+speech.play();
+
+// pause
+speech.pause();
+
+// resume
+// Start when paused.
+speech.resume();
+
+// stop
+speech.stop();
+
+/**
+ * Override the text selention read.
+ */
+// play
+speech.playSelection();
+
+// pause
+speech.pauseSelection();
+
+// resume
+speech.resumeSelection();
+
+// stop
+speech.stopSelection();
+
+```
+
+
+## Events
+- The following callback Methods are available.  
+以下のコールバックメソッドが使えます。
 
 ```javascript
 var speech = new nSpeech();
@@ -136,3 +201,8 @@ speech.onmark(function(){
 
 ## License
 Released under the MIT License. See the `LICENSE` file for details
+
+## Change Log
+##### 2017.10.06 - [v1.0.1](https://github.com/nkhr7/nSpeech/releases/tag/v1.0.0)
+- Supported the override text selection.
+

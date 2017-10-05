@@ -6,11 +6,11 @@
  *
  * Copyright 2017, Koichi Yoshimoto
  *
- * Version: 1.0.0
+ * Version: 1.0.1
  *
  * Licensed under MIT
  *
- * Released on: 2017.09.29
+ * Released on: 2017.10.06
  */
 
 (function (root, factory) {
@@ -88,6 +88,8 @@
 
     self.utterance = new window.SpeechSynthesisUtterance();
 
+    var provisionText = "";
+
 
     /**
      * Init
@@ -154,7 +156,7 @@
       // This Object is to insert default the language.
       var defaultVoice = {};
 
-      if ( voices.length ) {
+      if ( voices.length > 0 ) {
         // Voices loop
         for ( var i in voices ) {
 
@@ -241,6 +243,7 @@
       return txt;
     };
 
+
     /**
      * player controllers
      */
@@ -268,21 +271,75 @@
       synth.cancel();
     };
 
+
+    /**
+     * Overriding the text selection player controllers..
+     */
+    // play.
+    self.playSelection = function () {
+
+      var str = "";
+
+        // Get the text selection.
+      if ( window.getSelection ) {
+        str = window.getSelection().toString();
+      } else {
+        // For IE
+        str = document.selection.createRange().text;
+      }
+
+      // Keep default text.
+      provisionText = self.utterance.text;
+
+      // Set the text selection.
+      self.utterance.text = str;
+
+      self.play();
+    };
+
+    // pause.
+    self.pauseSelection = function () {
+      self.pause();
+    }
+
+    // resume.
+    self.resumeSelection = function () {
+      self.resume();
+    }
+
+    // stop.
+    self.stopSelection = function () {
+      // Restore default text.
+      self.utterance.text = provisionText;
+      self.stop();
+    };
+
+
+    /**
+     * Callback methods
+     */
+    // Fire when finish.
     self.onend = function ( fn ) {
       if ( typeof fn === "function" ) {
         setOptions( { onend: fn } );
       }
     }
+
+    // Fire when start.
     self.onstart = function ( fn ) {
       if ( typeof fn === "function" ) {
         setOptions( { onstart: fn } );
       }
     }
+
+    // Fire when an error occurs.
     self.onerror = function ( fn ) {
       if ( typeof fn === "function" ) {
         setOptions( { onerror: fn } );
       }
     }
+
+    // Fired when the spoken utterance reaches a named SSML "mark" tag.
     self.onmark = function ( fn ) {
       if ( typeof fn === "function" ) {
         setOptions( { onmark: fn } );
@@ -293,6 +350,11 @@
     // When getting out a tab.
     window.onbeforeunload = function() {
       self.stop();
+    };
+
+    // Fired when enable getVoices.
+    window.speechSynthesis.onvoiceschanged = function() {
+      init();
     };
 
 
