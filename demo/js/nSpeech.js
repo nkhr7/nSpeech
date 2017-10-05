@@ -84,7 +84,7 @@
     };
 
     // DOM Elements
-    self.elements = {};
+    self.elements = [];
 
     self.utterance = new window.SpeechSynthesisUtterance();
 
@@ -110,29 +110,10 @@
     /**
      * Gets elemtns by TagName, ID or className
      * @param  String str
-     * @return Object
+     * @return NodeList
      */
     var getElements = function ( str ) {
-
-      var obj = {};
-
-      if ( typeof str !== "undefined" ) {
-
-        // If ID
-        if ( str.slice(0, 1-str.length) === "#" ) {
-          obj = document.getElementById( str.slice(1) );
-
-        // If Class
-        } else if ( str.slice(0, 1-str.length) === "." ) {
-          obj = document.getElementsByClassName( str.slice(1) );
-
-        // If tag
-        } else {
-          obj = document.getElementsByTagName( str );
-        }
-      }
-
-      return obj;
+      return document.querySelectorAll ( str );
     };
 
 
@@ -204,34 +185,19 @@
     /**
      * Set message to read text
      */
-    var setMessage = function ( msg ) {
-
-      var txt;
-
+    var setMessage = function () {
       // To set message string.
-      var message = ( typeof str !== "undefined" ) ? msg : self.options.text;
-      message = formatText ( message );
+      var message = formatText ( self.options.text );
 
-      // If not found DOM.
-      if ( self.elements.length ) {
-
-        for ( var i in self.elements ) {
+      var length = self.elements.length;
+      for (var i = 0; i < length; ++i) {
+          var txt;
 
           // Inset text
           txt = self.elements[i].textContent;
 
           message += formatText ( txt ) + " ";
-
-        }
-
-      } else if ( typeof self.elements === "object" ) {
-
-        // Inset text
-        txt = self.elements.textContent;
-
-        message +=  formatText(txt);
       }
-
       // Insert message to default text
       self.options.text = message;
     };
