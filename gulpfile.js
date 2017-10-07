@@ -4,6 +4,9 @@ var gulp = require('gulp');
 var plugins = require("gulp-load-plugins")({lazy:false});
 var browserSync   = require('browser-sync');
 var runSequence   = require('run-sequence');//タスク直列処理
+var rollup = require('rollup');
+var uglify = require('rollup-plugin-uglify');
+var Promise = require('promise');
 
 var autoprefixer_setting = {
   browsers: ['last 2 versions'],
@@ -17,6 +20,7 @@ var dir = {
 };
 
 var nSpeech_path = dir.src + '/js/nSpeech.js';
+var nSpeech_dist_path = dir.dist + '/nSpeech.js';
 
 
 gulp.task('sass', function () {
@@ -46,39 +50,79 @@ gulp.task("reload", function () {
 });
 
 
-gulp.task('watch', ['sass', 'copy-demo', 'browser-sync'], function() {
+gulp.task('watch', function(cb) {
 
-  gulp.watch([
-    dir.demo + '/**/*.html'
-  ],['reload']);
+  runSequence(
+    'sass',
+    'build',
+    'browser-sync',
+    function () {
+      gulp.watch([
+        dir.demo + '/**/*.html'
+      ],['reload']);
 
-  gulp.watch([
-    dir.demo + '/**/*.scss'
-  ],['sass']);
+      gulp.watch([
+        dir.demo + '/**/*.scss'
+      ],['sass']);
 
-  // javascriptの監視
-  gulp.watch([nSpeech_path], ['copy-demo', 'reload']);
+      gulp.watch([
+        dir.demo + '/**/*.js'
+      ], ["reload"]);
+
+      // javascriptの監視
+      gulp.watch([nSpeech_path], ["build"]);
+      gulp.watch([nSpeech_dist_path], ["copy-demo"]);
+      return cb;
+    }
+  );
+});
+
+gulp.task('build', function() {
+  return rollup.rollup({
+    input: nSpeech_path
+  }).then(function(bundle) {
+    var amd = bundle.write({
+      file: dir.dist + '/index.amd.js',
+      format: "amd"
+    });
+
+    var cjs = bundle.write({
+      file: dir.dist + '/index.js',
+      format: "cjs"
+    });
+
+    var es = bundle.write({
+      file: dir.dist + '/index.es.js',
+      format: "es"
+    });
+
+    var iife = bundle.write({
+      file: dir.dist + '/nSpeech.js',
+      name: 'nSpeech',
+      format: 'iife'
+    });
+
+    return Promise.all([amd, cjs, es, iife]);
+  });
 });
 
 
 gulp.task('copy-demo', function() {
-  return gulp.src([nSpeech_path])
+  return gulp.src([nSpeech_dist_path])
   .pipe(gulp.dest(dir.demo + '/js'))
 });
 
-
-gulp.task('copy', function () {
-  return gulp.src([nSpeech_path])
-  .pipe(gulp.dest(dir.dist))
-});
-
-
 gulp.task('jsmin', function() {
-  return gulp.src([nSpeech_path])
-  .pipe(plugins.plumber())
-  .pipe(plugins.uglify({ output: { comments: /^!/ } }))
-  .pipe(plugins.rename({ extname: '.min.js' }))
-  .pipe(gulp.dest(dir.dist))
+  return rollup.rollup({
+    input: nSpeech_path,
+    plugins: [uglify({ output: { comments: /^!/ } })]
+  }).then(function(bundle) {
+    return bundle.write({
+      file: dir.dist + '/nSpeech.min.js',
+      name: 'nSpeech',
+      format: "iife"
+    });
+  });
 });
 
 gulp.task('jslint', function() {
@@ -91,10 +135,4 @@ gulp.task('default', ['watch']);
 
 gulp.task('test', ['jslint']);
 
-gulp.task('dist', function(callback) {
-  runSequence(
-    'copy',
-    'jsmin',
-    callback
-  )
-});
+gulp.task('dist', ['build', 'jsmin']);
