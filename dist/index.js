@@ -1,4 +1,3 @@
-var nSpeech = (function () {
 'use strict';
 
 /*!
@@ -348,6 +347,4 @@ var nSpeech$1 = function ( _selector, _options ){
   return self;
 };
 
-return nSpeech$1;
-
-}());
+module.exports = nSpeech$1;

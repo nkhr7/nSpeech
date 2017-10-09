@@ -2,7 +2,8 @@
   "name": "n-speech",
   "version": "1.0.1",
   "description": "nSpeech is screen reader javascript library.",
-  "main": "dist/nSpeech.js",
+  "main": "dist/index.js",
+  "jsnext:main": "dist/index.es.js",
   "keywords": [
     "webspeechapi",
     "nSpeech"
@@ -38,6 +39,9 @@
     "gulp-uglify": "^3.0.0",
     "gulp-util": "^3.0.8",
     "gulp-watch": "^4.3.11",
+    "promise": "^8.0.1",
+    "rollup": "^0.50.0",
+    "rollup-plugin-uglify": "^2.0.1",
     "run-sequence": "^2.2.0"
   }
 }
