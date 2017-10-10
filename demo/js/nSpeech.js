@@ -9,7 +9,7 @@ var nSpeech = (function () {
  *
  * Copyright 2017, Koichi Yoshimoto
  *
- * Version: 1.0.1
+ * Version: 1.0.2
  *
  * Licensed under MIT
  *
