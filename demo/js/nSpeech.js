@@ -61,10 +61,13 @@ var nSpeech$1 = function ( _selector, _options ){
     rate    : 1,
     pitch   : 1,
     text    : "",
-    onend   : function() { return undefined; },
-    onstart : function() { return undefined; },
-    onerror : function() { return undefined; },
-    onmark  : function() { return undefined; },
+    onboundary : function() { return undefined; },
+    onend      : function() { return undefined; },
+    onerror    : function() { return undefined; },
+    onmark     : function() { return undefined; },
+    onpause    : function() { return undefined; },
+    onresume   : function() { return undefined; },
+    onstart    : function() { return undefined; },
     debug   : false
   };
 
@@ -195,15 +198,18 @@ var nSpeech$1 = function ( _selector, _options ){
   */
   var setUtterance = function () {
 
-    self.utterance.voice   = self.options.voice;
-    self.utterance.volume  = self.options.volume;
-    self.utterance.rate    = self.options.rate;
-    self.utterance.pitch   = self.options.pitch;
-    self.utterance.text    = self.options.text;
-    self.utterance.onend   = self.options.onend;
-    self.utterance.onstart = self.options.onstart;
-    self.utterance.onerror = self.options.onerror;
-    self.utterance.onmark  = self.options.onmark;
+    self.utterance.voice      = self.options.voice;
+    self.utterance.volume     = self.options.volume;
+    self.utterance.rate       = self.options.rate;
+    self.utterance.pitch      = self.options.pitch;
+    self.utterance.text       = self.options.text;
+    self.utterance.onboundary = self.options.onboundary;
+    self.utterance.onend      = self.options.onend;
+    self.utterance.onerror    = self.options.onerror;
+    self.utterance.onmark     = self.options.onmark;
+    self.utterance.onpause    = self.options.onpause;
+    self.utterance.onresume   = self.options.onresume;
+    self.utterance.onstart    = self.options.onstart;
 
     if ( self.options.debug ) { console.log(self.utterance); }
   };
@@ -303,17 +309,17 @@ var nSpeech$1 = function ( _selector, _options ){
   /**
   * Callback methods
   */
+ // Fired when the spoken utterance reaches a word or sentence boundary.
+  self.onboundary = function ( fn ) {
+    if ( typeof fn === "function" ) {
+      setOptions( { onboundary: fn } );
+    }
+  };
+
   // Fire when finish.
   self.onend = function ( fn ) {
     if ( typeof fn === "function" ) {
       setOptions( { onend: fn } );
-    }
-  };
-
-  // Fire when start.
-  self.onstart = function ( fn ) {
-    if ( typeof fn === "function" ) {
-      setOptions( { onstart: fn } );
     }
   };
 
@@ -330,6 +336,28 @@ var nSpeech$1 = function ( _selector, _options ){
       setOptions( { onmark: fn } );
     }
   };
+
+  // Fire when pause.
+  self.onpause = function ( fn ) {
+    if ( typeof fn === "function" ) {
+      setOptions( { onpause: fn } );
+    }
+  };
+
+  // Fire when resume.
+  self.onresume = function ( fn ) {
+    if ( typeof fn === "function" ) {
+      setOptions( { onresume: fn } );
+    }
+  };
+
+  // Fire when start.
+  self.onstart = function ( fn ) {
+    if ( typeof fn === "function" ) {
+      setOptions( { onstart: fn } );
+    }
+  };
+
 
 
   // When getting out a tab.

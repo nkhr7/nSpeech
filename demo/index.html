@@ -185,13 +185,16 @@
     _stop.addEventListener('click', function(){
       playerStop(_speech, _play);
     });
-    _speech.onstart(function(){ console.log("onstart"); });
-    _speech.onmark(function(){  console.log("onmark"); });
-    _speech.onend(function(){
+    _speech.onboundary(function(e){ console.log(e); console.log("onboundary"); });
+    _speech.onresume(function(e){ console.log(e); console.log("onresume"); });
+    _speech.onpause(function(e){ console.log(e); console.log("onpause"); });
+    _speech.onstart(function(e){ console.log(e); console.log("onstart"); });
+    _speech.onmark(function(e){ console.log(e);  console.log("onmark"); });
+    _speech.onend(function(e){ console.log(e);
       playerStop(_speech, _play);
       console.log("onend");
     });
-    _speech.onerror(function(){
+    _speech.onerror(function(e){ console.log(e);
       playerStop(_speech, _play);
       console.log("onerror");
     });
@@ -237,13 +240,16 @@
   stop8.addEventListener('click', function(){
     playerStopSelection(speech_8, play8);
   });
-  speech_8.onstart(function(){ console.log("onstart"); });
-  speech_8.onmark(function(){ console.log("onmark"); });
-  speech_8.onend(function(){
+  speech_8.onboundary(function(e){ console.log(e); console.log("onboundary"); });
+  speech_8.onresume(function(e){ console.log(e); console.log("onresume"); });
+  speech_8.onpause(function(e){ console.log(e); console.log("onpause"); });
+  speech_8.onstart(function(e){ console.log(e); console.log("onstart"); });
+  speech_8.onmark(function(e){ console.log(e);  console.log("onmark"); });
+  speech_8.onend(function(e){ console.log(e);
     playerStop(speech_8, play8);
     console.log("onend");
   });
-  speech_8.onerror(function(){
+  speech_8.onerror(function(e){ console.log(e);
     playerStop(speech_8, play8);
     console.log("onerror");
   });

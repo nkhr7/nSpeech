@@ -170,25 +170,41 @@ speech.stopSelection();
 ```javascript
 var speech = new nSpeech();
 
-// When finish.
-speech.onend(function(){ 
-  console.log("onend"); 
+// Fired when the spoken utterance reaches a word or sentence boundary.
+speech.onboundary(function(){
+  console.log("onboundary");
 });
 
-// When start.
-speech.onstart(function(){ 
-  console.log("onstart"); 
+// Fire when finish.
+speech.onend = fu(ion(){
+  console.log("onend");
 });
 
-// When an error occurs.
-speech.onerror(function(){ 
-  console.log("onerror"); 
+// Fire when an error occurs.
+speech.onerror = (ction(){
+  console.log("onerror");
 });
 
 // Fired when the spoken utterance reaches a named SSML "mark" tag.
-speech.onmark(function(){ 
-  console.log("onmark"); 
+speech.onmark = f(tion(){
+  console.log("onmark");
 });
+
+// Fire when pause.
+speech.onpause = (ction(){
+  console.log("onpause");
+});
+
+// Fire when resume.
+speech.onresume =(nction(){
+  console.log("onresume");
+});
+
+// Fire when start.
+speech.onstart = (ction(){
+  console.log("onstart");
+});
+
 ```
 
 ## Browser
@@ -203,6 +219,9 @@ speech.onmark(function(){
 Released under the MIT License. See the `LICENSE` file for details
 
 ## Change Log
+##### 2017.10.10 - [v1.0.2](https://github.com/nkhr7/nSpeech/releases/tag/v1.0.0)
+- Add other callback methods. onboundary, onpause, onresume.
+
 ##### 2017.10.06 - [v1.0.1](https://github.com/nkhr7/nSpeech/releases/tag/v1.0.0)
 - Supported the override text selection.
 

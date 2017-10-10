@@ -1,6 +1,3 @@
-var nSpeech = (function () {
-'use strict';
-
 /*!
  * nSpeech
  * nSpeech is screen reader library.
@@ -376,6 +373,4 @@ var nSpeech$1 = function ( _selector, _options ){
   return self;
 };
 
-return nSpeech$1;
-
-}());
+export default nSpeech$1;

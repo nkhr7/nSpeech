@@ -1,5 +1,4 @@
-var nSpeech = (function () {
-'use strict';
+define(function () { 'use strict';
 
 /*!
  * nSpeech
@@ -378,4 +377,4 @@ var nSpeech$1 = function ( _selector, _options ){
 
 return nSpeech$1;
 
-}());
+});
