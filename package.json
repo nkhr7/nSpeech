@@ -1,12 +1,13 @@
 {
   "name": "n-speech",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "nSpeech is screen reader javascript library.",
   "main": "dist/index.js",
   "jsnext:main": "dist/index.es.js",
   "files": [
     "README.md",
     "package.json",
+    "LICENSE",
     "dist"
   ],
   "keywords": [
