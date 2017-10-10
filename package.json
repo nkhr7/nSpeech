@@ -4,6 +4,11 @@
   "description": "nSpeech is screen reader javascript library.",
   "main": "dist/index.js",
   "jsnext:main": "dist/index.es.js",
+  "files": [
+    "README.md",
+    "package.json",
+    "dist"
+  ],
   "keywords": [
     "webspeechapi",
     "nSpeech"
