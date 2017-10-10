@@ -10,7 +10,7 @@
   ],
   "homepage": "https://github.com/nkhr7/nSpeech",
   "scripts": {
-    "test": "gulp test"
+    "test": "gulp test build"
   },
   "repository": {
     "type": "git",
