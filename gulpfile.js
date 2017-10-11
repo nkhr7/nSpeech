@@ -1,3 +1,16 @@
+/* eslint-env node */
+/* eslint linebreak-style: "off" */
+/* eslint camelcase: "off" */
+/* eslint array-bracket-newline: "off" */
+/* eslint dot-location: "off" */
+/* eslint object-curly-newline: "off" */
+/* eslint object-curly-spacing: "off" */
+/* eslint comma-spacing: "off" */
+/* eslint line-comment-position: "off" */
+/* eslint no-inline-comments: "off" */
+/* eslint array-element-newline: "off" */
+/* eslint strict: "off" */
+
 'use strict';
 
 var gulp = require('gulp');
@@ -125,14 +138,16 @@ gulp.task('jsmin', function() {
   });
 });
 
-gulp.task('jslint', function() {
+gulp.task('lint', function() {
   return gulp.src([nSpeech_path])
-  .pipe(plugins.jslint())
+  .pipe(plugins.eslint())
+  .pipe(plugins.eslint.format())
+  .pipe(plugins.eslint.failAfterError());
 });
 
 
 gulp.task('default', ['watch']);
 
-gulp.task('test', ['jslint']);
+gulp.task('test', ['lint']);
 
 gulp.task('dist', ['build', 'jsmin']);
