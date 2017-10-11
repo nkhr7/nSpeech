@@ -217,6 +217,9 @@ speech.onstart = (ction(){
 - Heading and some text adds period. (Because reading to flush)  
 見出しやその他文章に句読点をつけたい。(流れるように読んでしまうため)
 
+- Async controller options.  
+コントローラーの処理を非同期的に行う。
+
 ## License
 Released under the MIT License. See the `LICENSE` file for details
 
