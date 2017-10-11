@@ -2,288 +2,121 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>nSpeech test</title>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-
-  <style>
-
-    h1 {
-      padding-left: 30px;
-    }
-
-    section {
-      border-bottom: 1px solid #999;
-      padding: 60px 10px;
-    }
-  </style>
-
+  <link rel="stylesheet" href="css/foundation.css">
 </head>
 
 <body>
 
+<div class="grid-container">
+
   <h1>nSpeech</h1>
 
-  <section id="test1" class="test1">
-    <div>
-      <button id="play1">PLAY</button>
-      <button id="stop1">stop</button>
-    </div>
-    <h2 class="speech">Default selector ".speech"</h2>
-    <p class="speech">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam nam veniam beatae iure provident laborum nobis quod ipsam neque rerum non perspiciatis modi eum architecto, quidem, accusantium mollitia, at esse.</p>
-  </section>
+  <p class="speech">デフォルトではクラス"speech"をつけたテキストが読み上げられます。</p>
+  <p class="speech">テキストを範囲選択することで、その文章を読み上げます。（選択範囲を無くすと、元の文章に戻ります。）</p>
+  <p class="speech">下のテキストエリアに文章を入れると読み上げられます。（デフォルトの文章は上書きされます。）</p>
 
-  <section class="test2">
-    <div>
-      <button id="play2">PLAY</button>
-      <button id="stop2">stop</button>
-    </div>
-    <div id="test2_speech">
-      <h2>ID selector</h2>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam nam veniam beatae iure provident laborum nobis quod ipsam neque rerum non perspiciatis modi eum architecto, quidem, accusantium mollitia, at esse.</p>
-    </div>
-  </section>
+  <textarea name="text" id="text" cols="30" rows="10"></textarea>
 
+  <div class="grid-x grid-margin-x align-bottom">
+    <div class="medium-10 large-3 cell">
+      <label id="volumeLabel">Volume</label>
 
-  <section class="test3">
-    <div>
-      <button id="play3">PLAY</button>
-      <button id="stop3">stop</button>
-    </div>
-    <h2 class="test-speech">Other class selectors</h2>
-    <p class="test-speech">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam nam veniam beatae iure provident laborum nobis quod ipsam neque rerum non perspiciatis modi eum architecto, quidem, accusantium mollitia, at esse.</p>
-  </section>
+      <div class="slider" aria-labelledby="volumeLabel" data-slider data-initial-start='1' data-start='0.1' data-end='1' data-step="0.1">
+        <span class="slider-handle"  data-slider-handle role="slider" tabindex="1" aria-controls="volume"></span>
+        <span class="slider-fill" data-slider-fill></span>
+      </div>
 
-  <section class="test4">
-    <div>
-      <button id="play4">PLAY</button>
-      <button id="stop4">stop</button>
     </div>
-    <h3>Tags</h3>
-    <h3>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam nam veniam beatae iure provident laborum nobis quod ipsam neque rerum non perspiciatis modi eum architecto, quidem, accusantium mollitia, at esse.</h3>
-  </section>
+    <div class="medium-2 large-1 cell">
+      <input type="number" id="volume">
+    </div>
 
-  <section class="test5">
-    <div>
-      <button id="play5">PLAY</button>
-      <button id="stop5">stop</button>
-    </div>
-    <div id="test5_speech">
-      <h2>Custom Options</h2>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam nam veniam beatae iure provident laborum nobis quod ipsam neque rerum non perspiciatis modi eum architecto, quidem, accusantium mollitia, at esse.</p>
-    </div>
-  </section>
+    <div class="medium-10 large-3 cell">
+      <label id="rateLabel">Rate</label>
 
-  <section class="test6">
-    <div>
-      <button id="play6">PLAY</button>
-      <button id="stop6">stop</button>
-    </div>
-    <div>
-      <h2>Only custom options</h2>
-    </div>
-  </section>
+      <div class="slider" aria-labelledby="rateLabel" data-slider data-initial-start='1' data-start='0.1' data-end='10' data-step="0.1">
+        <span class="slider-handle"  data-slider-handle role="slider" tabindex="1" aria-controls="rate"></span>
+        <span class="slider-fill" data-slider-fill></span>
+      </div>
 
-  <section class="test7">
-    <div>
-      <button id="play7">PLAY</button>
-      <button id="stop7">stop</button>
     </div>
-    <div id="test7_speech">
-      <h2>日本語だよ！</h2>
-      <p>オプションのlangでja-JPを選んでね！</p>
+    <div class="medium-2 large-1 cell">
+      <input type="number" id="rate">
     </div>
-  </section>
 
-  <section class="test8">
-    <div>
-      <button id="play8">PLAY</button>
-      <button id="stop8">stop</button>
-    </div>
-    <div id="test8_speech">
-      <h2>選択範囲の文字が読まれるよ！</h2>
-      <p>カーソルでドラッグして文字を選択してみよう！</p>
-    </div>
-  </section>
+    <div class="medium-10 large-3 cell">
+      <label id="pitchLabel">Pitch</label>
 
+      <div class="slider" aria-labelledby="pitchLabel" data-slider data-initial-start='1' data-start='0' data-end='2' data-step="0.1">
+        <span class="slider-handle"  data-slider-handle role="slider" tabindex="1" aria-controls="pitch"></span>
+        <span class="slider-fill" data-slider-fill></span>
+      </div>
+
+    </div>
+    <div class="medium-2 large-1 cell">
+      <input type="number" id="pitch">
+    </div>
+  </div>
+  <!-- /.grid-x -->
+
+  <p class="button-group">
+    <button type="button" id="play" class="button">Play</button>
+    <button type="button" id="pause" class="button">Pause</button>
+    <button type="button" id="resume" class="button">Resume</button>
+    <button type="button" id="stop" class="button">Stop</button>
+  </p>
+
+</div>
+<!-- /.grid-container -->
 
 <a href="https://github.com/nkhr7/nSpeech"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+
+<script src="js/vendor/jquery.js"></script>
+<script src="js/vendor/what-input.js"></script>
+<script src="js/vendor/foundation.min.js"></script>
 
 <script  src="js/nSpeech.js"></script>
 <script>
 
-  let speech_1 = new nSpeech();
+  $(document).foundation();
 
-  let speech_2 = new nSpeech('#test2_speech');
+  var play = document.getElementById('play');
+  var pause = document.getElementById('pause');
+  var resume = document.getElementById('resume');
+  var stop = document.getElementById('stop');
+  var text = document.getElementById('text');
+  var volume = document.getElementById('volume');
+  var rate = document.getElementById('rate');
+  var pitch = document.getElementById('pitch');
 
-  let speech_3 = new nSpeech('.test-speech');
+  var speech = new nSpeech();
 
-  let speech_4 = new nSpeech('h3');
-
-  let speech_5 = new nSpeech('#test5_speech', {
-    lang    : "en-US",
-    volume  : 0.8,
-    rate    : 0.8,
-    pitch   : 0.8,
-    text    : "We can insert before text.",
-    onend   : function () { console.log('onend'); },
-    onstart : function () { console.log('onstart'); },
-    onerror : function () { console.log('onerror'); },
-    onmark  : function () { console.log('onmark'); },
-    debug   : true
+  play.addEventListener('click', function(){
+    speech.changeVolume(volume.value);
+    speech.changeRate(rate.value);
+    speech.changePitch(pitch.value);
+    speech.play();
   });
 
-  let speech_6 = new nSpeech({
-    lang   : "en-US",
-    volume : 0.8,
-    rate   : 0.8,
-    pitch  : 0.8,
-    text   : "This is only custom options.",
+  pause.addEventListener('click', function(){
+    speech.pause();
   });
 
-  let speech_7 = new nSpeech('#test7_speech', {
-    lang : "ja-JP",
+  resume.addEventListener('click', function(){
+    speech.resume();
   });
 
-  let speech_8 = new nSpeech('#test8_speech', {
-    lang : "ja-JP",
+  stop.addEventListener('click', function(){
+    speech.stop();
   });
 
-
-  var isPlay = 0;
-
-  var play1 = document.getElementById('play1');
-  var play2 = document.getElementById('play2');
-  var play3 = document.getElementById('play3');
-  var play4 = document.getElementById('play4');
-  var play5 = document.getElementById('play5');
-  var play6 = document.getElementById('play6');
-  var play7 = document.getElementById('play7');
-  var play8 = document.getElementById('play8');
-
-  var stop1 = document.getElementById('stop1');
-  var stop2 = document.getElementById('stop2');
-  var stop3 = document.getElementById('stop3');
-  var stop4 = document.getElementById('stop4');
-  var stop5 = document.getElementById('stop5');
-  var stop6 = document.getElementById('stop6');
-  var stop7 = document.getElementById('stop7');
-  var stop8 = document.getElementById('stop8');
-
-  playerAddEvent(speech_1, play1, stop1);
-  playerAddEvent(speech_2, play2, stop2);
-  playerAddEvent(speech_3, play3, stop3);
-  playerAddEvent(speech_4, play4, stop4);
-  playerAddEvent(speech_5, play5, stop5);
-  playerAddEvent(speech_6, play6, stop6);
-  playerAddEvent(speech_7, play7, stop7);
-
-  function playerAddEvent ( _speech, _play, _stop ) {
-    _play.addEventListener('click', function(){
-      playerController(_speech, _play);
-    });
-    _stop.addEventListener('click', function(){
-      playerStop(_speech, _play);
-    });
-    _speech.onboundary(function(e){ console.log(e); console.log("onboundary"); });
-    _speech.onresume(function(e){ console.log(e); console.log("onresume"); });
-    _speech.onpause(function(e){ console.log(e); console.log("onpause"); });
-    _speech.onstart(function(e){ console.log(e); console.log("onstart"); });
-    _speech.onmark(function(e){ console.log(e);  console.log("onmark"); });
-    _speech.onend(function(e){ console.log(e);
-      playerStop(_speech, _play);
-      console.log("onend");
-    });
-    _speech.onerror(function(e){ console.log(e);
-      playerStop(_speech, _play);
-      console.log("onerror");
-    });
-  }
-
-
-  function playerController ( _ele, btn ) {
-    switch(isPlay) {
-      case 0 :
-        _ele.play();
-        btn.innerText = 'pause';
-        isPlay = 1;
-        break;
-      case 1 :
-        _ele.pause();
-        btn.innerText = 'resume';
-        isPlay = 2;
-        break;
-      case 2 :
-        _ele.resume();
-        btn.innerText = 'stop';
-        isPlay = 1;
-        break;
-      default :
-        _ele.play();
-        btn.innerText = 'pause';
-        isPlay = 1;
-        break;
-    }
-  }
-
-  function playerStop ( _ele, btn ) {
-    _ele.stop();
-    btn.innerText = 'PLAY';
-    isPlay = 0;
-  }
-
-
-
-  play8.addEventListener('click', function(){
-    playerControllerSelection(speech_8, play8);
+  text.addEventListener('input', function(){
+    speech.replaceText(this.value);
   });
-  stop8.addEventListener('click', function(){
-    playerStopSelection(speech_8, play8);
-  });
-  speech_8.onboundary(function(e){ console.log(e); console.log("onboundary"); });
-  speech_8.onresume(function(e){ console.log(e); console.log("onresume"); });
-  speech_8.onpause(function(e){ console.log(e); console.log("onpause"); });
-  speech_8.onstart(function(e){ console.log(e); console.log("onstart"); });
-  speech_8.onmark(function(e){ console.log(e);  console.log("onmark"); });
-  speech_8.onend(function(e){ console.log(e);
-    playerStop(speech_8, play8);
-    console.log("onend");
-  });
-  speech_8.onerror(function(e){ console.log(e);
-    playerStop(speech_8, play8);
-    console.log("onerror");
-  });
-
-  function playerControllerSelection ( _ele, btn ) {
-    switch(isPlay) {
-      case 0 :
-        _ele.playSelection();
-        btn.innerText = 'pause';
-        isPlay = 1;
-        break;
-      case 1 :
-        _ele.pauseSelection();
-        btn.innerText = 'resume';
-        isPlay = 2;
-        break;
-      case 2 :
-        _ele.resumeSelection();
-        btn.innerText = 'stop';
-        isPlay = 1;
-        break;
-      default :
-        _ele.playSelection();
-        btn.innerText = 'pause';
-        isPlay = 1;
-        break;
-    }
-  }
-  function playerStopSelection ( _ele, btn ) {
-    _ele.stopSelection();
-    btn.innerText = 'PLAY';
-    isPlay = 0;
-  }
-
 
 </script>
 </body>
