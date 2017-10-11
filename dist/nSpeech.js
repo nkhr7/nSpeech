@@ -9,11 +9,11 @@ var nSpeech = (function () {
  *
  * Copyright 2017, Koichi Yoshimoto
  *
- * Version: 1.0.2
+ * Version: 1.0.3
  *
  * Licensed under MIT
  *
- * Released on: 2017.10.06
+ * Released on: 2017.10.11
  */
 var nSpeech$1 = function ( _selector, _options ){
 
@@ -62,7 +62,7 @@ var nSpeech$1 = function ( _selector, _options ){
     pitch   : 1,
     text    : "",
     onboundary : function() { return undefined; },
-    onend      : function() { return undefined; },
+    onend      : function() { resetText(); return undefined; },
     onerror    : function() { return undefined; },
     onmark     : function() { return undefined; },
     onpause    : function() { return undefined; },
@@ -183,8 +183,13 @@ var nSpeech$1 = function ( _selector, _options ){
     for (var i = 0; i < length; ++i) {
       var txt;
 
-      // Inset text
-      txt = self.elements[i].textContent;
+      if ( self.elements[i].tagName === "INPUT" || self.elements[i].tagName === "TEXTAREA" ) {
+        txt = self.elements[i].value;
+
+      } else {
+        // Inset text
+        txt = self.elements[i].textContent;
+      }
 
       message += formatText ( txt ) + " ";
     }
@@ -236,6 +241,49 @@ var nSpeech$1 = function ( _selector, _options ){
 
 
   /**
+   * Set the override the text selection.
+   * @return bool
+   */
+  var setSelection = function ( str ) {
+
+    var str = "";
+
+    // Get the text selection.
+    if ( window.getSelection ) {
+      str = window.getSelection().toString();
+    } else {
+      // For IE
+      str = document.selection.createRange().text;
+    }
+
+    // If get selection text.
+    if ( str !== "" ) {
+      // Keep default text.
+      provisionText = self.utterance.text;
+
+      // Set the text selection.
+      self.utterance.text = str;
+      return true;
+    }
+    return false;
+  };
+
+
+  /**
+   * Reset utterance.text if this is changed by override the text selection.
+   * @return bool
+   */
+  var resetText = function () {
+    if ( provisionText !== "" ) {
+      // Restore default text.
+      self.utterance.text = provisionText;
+      return true;
+    }
+    return false;
+  };
+
+
+  /**
   * player controllers
   */
   // play
@@ -244,6 +292,10 @@ var nSpeech$1 = function ( _selector, _options ){
     if ( self.options.voice === null ) {
       init();
     }
+
+    // Repalce text when getSelection.
+    setSelection();
+
     synth.speak( self.utterance );
   };
 
@@ -259,50 +311,28 @@ var nSpeech$1 = function ( _selector, _options ){
 
   // stop
   self.stop = function () {
+    resetText();
     synth.cancel();
   };
 
 
   /**
-  * Overriding the text selection player controllers..
-  */
-  // play.
-  self.playSelection = function () {
-
-    var str = "";
-
-    // Get the text selection.
-    if ( window.getSelection ) {
-      str = window.getSelection().toString();
-    } else {
-      // For IE
-      str = document.selection.createRange().text;
-    }
-
-    // Keep default text.
-    provisionText = self.utterance.text;
-
-    // Set the text selection.
+   * Change options
+   */
+  self.replaceText = function ( str ) {
     self.utterance.text = str;
-
-    self.play();
   };
 
-  // pause.
-  self.pauseSelection = function () {
-    self.pause();
+  self.changeVolume = function ( value ) {
+   self.utterance.volume = value;
   };
 
-  // resume.
-  self.resumeSelection = function () {
-    self.resume();
+  self.changeRate = function ( value ) {
+   self.utterance.rate = value;
   };
 
-  // stop.
-  self.stopSelection = function () {
-    // Restore default text.
-    self.utterance.text = provisionText;
-    self.stop();
+  self.changePitch = function ( value ) {
+   self.utterance.pitch = value;
   };
 
 
@@ -318,6 +348,7 @@ var nSpeech$1 = function ( _selector, _options ){
 
   // Fire when finish.
   self.onend = function ( fn ) {
+    resetText();
     if ( typeof fn === "function" ) {
       setOptions( { onend: fn } );
     }

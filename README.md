@@ -145,20 +145,22 @@ speech.resume();
 // stop
 speech.stop();
 
-/**
- * Override the text selention read.
- */
-// play
-speech.playSelection();
 
-// pause
-speech.pauseSelection();
+////////////////
+// change options.
+////////////////
 
-// resume
-speech.resumeSelection();
+// replace text
+speech.replaceText("Replace text");
 
-// stop
-speech.stopSelection();
+// change volume
+speech.changeVolume(1);
+
+// change rate
+speech.changeRate(1);
+
+// change pitch
+speech.changePitch(1);
 
 ```
 
@@ -219,9 +221,14 @@ speech.onstart = (ction(){
 Released under the MIT License. See the `LICENSE` file for details
 
 ## Change Log
-##### 2017.10.10 - [v1.0.2](https://github.com/nkhr7/nSpeech/releases/tag/v1.0.0)
+##### 2017.10.11 - [v1.0.3](https://github.com/nkhr7/nSpeech/releases/tag/v1.0.3)
+- playSelection integrate to play.
+- Add change voice options.
+- Supported in input and textarea.
+
+##### 2017.10.10 - [v1.0.2](https://github.com/nkhr7/nSpeech/releases/tag/v1.0.2)
 - Add other callback methods. onboundary, onpause, onresume.
 
-##### 2017.10.06 - [v1.0.1](https://github.com/nkhr7/nSpeech/releases/tag/v1.0.0)
+##### 2017.10.06 - [v1.0.1](https://github.com/nkhr7/nSpeech/releases/tag/v1.0.1)
 - Supported the override text selection.
 
