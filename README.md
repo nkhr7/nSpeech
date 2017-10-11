@@ -1,4 +1,4 @@
-# nSpeech [![Build Status](https://travis-ci.org/nkhr7/nSpeech.svg?branch=master)](https://travis-ci.org/nkhr7/nSpeech) [![Dependency Status](https://gemnasium.com/badges/github.com/nkhr7/nSpeech.svg)](https://gemnasium.com/github.com/nkhr7/nSpeech)
+# nSpeech [![Build Status](https://travis-ci.org/nkhr7/nSpeech.svg?branch=master)](https://travis-ci.org/nkhr7/nSpeech) [![Dependency Status](https://gemnasium.com/badges/github.com/nkhr7/nSpeech.svg)](https://gemnasium.com/github.com/nkhr7/nSpeech) [![npm version](https://badge.fury.io/js/n-speech.svg)](https://badge.fury.io/js/n-speech) [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 
 
 nSpeech is screen reader library.  
