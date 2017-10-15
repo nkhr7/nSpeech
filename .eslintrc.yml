@@ -220,7 +220,7 @@ rules:
   require-await: error
   require-jsdoc: 'off'
   rest-spread-spacing: error
-  semi: 'off'
+  semi: 'error'
   semi-spacing:
     - error
     - after: true
@@ -232,7 +232,7 @@ rules:
   sort-keys: 'off'
   sort-vars: error
   space-before-blocks: 'off'
-  space-before-function-paren: 'off'
+  space-before-function-paren: 'error'
   space-in-parens: 'off'
   space-infix-ops: error
   space-unary-ops: error
