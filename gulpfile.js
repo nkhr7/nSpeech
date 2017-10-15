@@ -1,16 +1,3 @@
-/* eslint-env node */
-/* eslint linebreak-style: "off" */
-/* eslint camelcase: "off" */
-/* eslint array-bracket-newline: "off" */
-/* eslint dot-location: "off" */
-/* eslint object-curly-newline: "off" */
-/* eslint object-curly-spacing: "off" */
-/* eslint comma-spacing: "off" */
-/* eslint line-comment-position: "off" */
-/* eslint no-inline-comments: "off" */
-/* eslint array-element-newline: "off" */
-/* eslint strict: "off" */
-
 'use strict';
 
 var gulp = require('gulp');
