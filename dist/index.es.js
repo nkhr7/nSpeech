@@ -13,6 +13,8 @@
  * Released on: 2017.10.11
  */
 var nSpeech$1 = function ( _selector, _options ){
+  /* eslint no-undef: "off" */
+  /* eslint no-extra-semi: "off" */
 
   // unsupported.
   if (typeof SpeechSynthesisUtterance === "undefined") {

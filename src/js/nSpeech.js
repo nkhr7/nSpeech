@@ -13,6 +13,9 @@
  * Released on: 2017.10.11
  */
 export default function ( _selector, _options ){
+  /* eslint no-undef: "off" */
+  /* eslint no-extra-semi: "off" */
+  /* eslint no-redeclare: "off" */
 
   // unsupported.
   if (typeof SpeechSynthesisUtterance === "undefined") {
