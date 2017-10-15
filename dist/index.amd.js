@@ -14,9 +14,7 @@ define(function () { 'use strict';
  *
  * Released on: 2017.10.11
  */
-var nSpeech$1 = function ( _selector, _options ){
-  /* eslint no-undef: "off" */
-  /* eslint no-extra-semi: "off" */
+function nSpeech ( _selector, _options ){
 
   // unsupported.
   if (typeof SpeechSynthesisUtterance === "undefined") {
@@ -62,13 +60,13 @@ var nSpeech$1 = function ( _selector, _options ){
     rate    : 1,
     pitch   : 1,
     text    : "",
-    onboundary : function() { return undefined; },
-    onend      : function() { resetText(); return undefined; },
-    onerror    : function() { return undefined; },
-    onmark     : function() { return undefined; },
-    onpause    : function() { return undefined; },
-    onresume   : function() { return undefined; },
-    onstart    : function() { return undefined; },
+    onboundary : function () { return undefined; },
+    onend      : function () { resetText(); return undefined; },
+    onerror    : function () { return undefined; },
+    onmark     : function () { return undefined; },
+    onpause    : function () { return undefined; },
+    onresume   : function () { return undefined; },
+    onstart    : function () { return undefined; },
     debug   : false
   };
 
@@ -245,7 +243,7 @@ var nSpeech$1 = function ( _selector, _options ){
    * Set the override the text selection.
    * @return bool
    */
-  var setSelection = function ( str ) {
+  var setSelection = function () {
 
     var str = "";
 
@@ -393,12 +391,12 @@ var nSpeech$1 = function ( _selector, _options ){
 
 
   // When getting out a tab.
-  window.onbeforeunload = function() {
+  window.onbeforeunload = function () {
     self.stop();
   };
 
   // Fired when enable getVoices.
-  window.speechSynthesis.onvoiceschanged = function() {
+  window.speechSynthesis.onvoiceschanged = function () {
     init();
   };
 
@@ -406,8 +404,8 @@ var nSpeech$1 = function ( _selector, _options ){
   init();
 
   return self;
-};
+}
 
-return nSpeech$1;
+return nSpeech;
 
 });

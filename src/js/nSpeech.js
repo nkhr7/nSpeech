@@ -12,10 +12,7 @@
  *
  * Released on: 2017.10.11
  */
-export default function ( _selector, _options ){
-  /* eslint no-undef: "off" */
-  /* eslint no-extra-semi: "off" */
-  /* eslint no-redeclare: "off" */
+export default function nSpeech ( _selector, _options ){
 
   // unsupported.
   if (typeof SpeechSynthesisUtterance === "undefined") {
@@ -61,13 +58,13 @@ export default function ( _selector, _options ){
     rate    : 1,
     pitch   : 1,
     text    : "",
-    onboundary : function() { return undefined; },
-    onend      : function() { resetText(); return undefined; },
-    onerror    : function() { return undefined; },
-    onmark     : function() { return undefined; },
-    onpause    : function() { return undefined; },
-    onresume   : function() { return undefined; },
-    onstart    : function() { return undefined; },
+    onboundary : function () { return undefined; },
+    onend      : function () { resetText(); return undefined; },
+    onerror    : function () { return undefined; },
+    onmark     : function () { return undefined; },
+    onpause    : function () { return undefined; },
+    onresume   : function () { return undefined; },
+    onstart    : function () { return undefined; },
     debug   : false
   };
 
@@ -244,7 +241,7 @@ export default function ( _selector, _options ){
    * Set the override the text selection.
    * @return bool
    */
-  var setSelection = function ( str ) {
+  var setSelection = function () {
 
     var str = "";
 
@@ -266,7 +263,7 @@ export default function ( _selector, _options ){
       return true;
     }
     return false;
-  }
+  };
 
 
   /**
@@ -280,7 +277,7 @@ export default function ( _selector, _options ){
       return true;
     }
     return false;
-  }
+  };
 
 
   /**
@@ -321,19 +318,19 @@ export default function ( _selector, _options ){
    */
   self.replaceText = function ( str ) {
     self.utterance.text = str;
-  }
+  };
 
   self.changeVolume = function ( value ) {
    self.utterance.volume = value;
-  }
+  };
 
   self.changeRate = function ( value ) {
    self.utterance.rate = value;
-  }
+  };
 
   self.changePitch = function ( value ) {
    self.utterance.pitch = value;
-  }
+  };
 
 
   /**
@@ -344,7 +341,7 @@ export default function ( _selector, _options ){
     if ( typeof fn === "function" ) {
       setOptions( { onboundary: fn } );
     }
-  }
+  };
 
   // Fire when finish.
   self.onend = function ( fn ) {
@@ -352,52 +349,52 @@ export default function ( _selector, _options ){
     if ( typeof fn === "function" ) {
       setOptions( { onend: fn } );
     }
-  }
+  };
 
   // Fire when an error occurs.
   self.onerror = function ( fn ) {
     if ( typeof fn === "function" ) {
       setOptions( { onerror: fn } );
     }
-  }
+  };
 
   // Fired when the spoken utterance reaches a named SSML "mark" tag.
   self.onmark = function ( fn ) {
     if ( typeof fn === "function" ) {
       setOptions( { onmark: fn } );
     }
-  }
+  };
 
   // Fire when pause.
   self.onpause = function ( fn ) {
     if ( typeof fn === "function" ) {
       setOptions( { onpause: fn } );
     }
-  }
+  };
 
   // Fire when resume.
   self.onresume = function ( fn ) {
     if ( typeof fn === "function" ) {
       setOptions( { onresume: fn } );
     }
-  }
+  };
 
   // Fire when start.
   self.onstart = function ( fn ) {
     if ( typeof fn === "function" ) {
       setOptions( { onstart: fn } );
     }
-  }
+  };
 
 
 
   // When getting out a tab.
-  window.onbeforeunload = function() {
+  window.onbeforeunload = function () {
     self.stop();
   };
 
   // Fired when enable getVoices.
-  window.speechSynthesis.onvoiceschanged = function() {
+  window.speechSynthesis.onvoiceschanged = function () {
     init();
   };
 
@@ -405,4 +402,4 @@ export default function ( _selector, _options ){
   init();
 
   return self;
-};
+}
