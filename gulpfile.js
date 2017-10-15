@@ -20,6 +20,7 @@ var runSequence   = require('run-sequence');//タスク直列処理
 var rollup = require('rollup');
 var uglify = require('rollup-plugin-uglify');
 var Promise = require('promise');
+var del = require('del');
 
 var autoprefixer_setting = {
   browsers: ['last 2 versions'],
@@ -145,6 +146,11 @@ gulp.task('lint', function() {
   .pipe(plugins.eslint.failAfterError());
 });
 
+gulp.task('clean', function() {
+  return del(['dist']);
+});
+
+gulp.task('prepublish', runSequence(['build', 'clean']));
 
 gulp.task('default', ['watch']);
 

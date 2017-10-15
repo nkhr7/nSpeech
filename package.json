@@ -16,7 +16,8 @@
   ],
   "homepage": "https://github.com/nkhr7/nSpeech",
   "scripts": {
-    "test": "gulp test build"
+    "test": "gulp test build",
+    "prepublish": "gulp clean build"
   },
   "repository": {
     "type": "git",
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "browser-sync": "^2.18.13",
+    "del": "^3.0.0",
     "eslint": "^4.8.0",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^4.0.0",
