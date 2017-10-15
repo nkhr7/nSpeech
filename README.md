@@ -178,32 +178,32 @@ speech.onboundary(function(){
 });
 
 // Fire when finish.
-speech.onend = fu(ion(){
+speech.onend = (function(){
   console.log("onend");
 });
 
 // Fire when an error occurs.
-speech.onerror = (ction(){
+speech.onerror = (function(){
   console.log("onerror");
 });
 
 // Fired when the spoken utterance reaches a named SSML "mark" tag.
-speech.onmark = f(tion(){
+speech.onmark = (function(){
   console.log("onmark");
 });
 
 // Fire when pause.
-speech.onpause = (ction(){
+speech.onpause = (function(){
   console.log("onpause");
 });
 
 // Fire when resume.
-speech.onresume =(nction(){
+speech.onresume =(function(){
   console.log("onresume");
 });
 
 // Fire when start.
-speech.onstart = (ction(){
+speech.onstart = (function(){
   console.log("onstart");
 });
 
