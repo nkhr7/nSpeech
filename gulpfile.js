@@ -1,47 +1,42 @@
-'use strict';
+const gulp = require('gulp');
+const plugins = require("gulp-load-plugins")({ lazy:false });
+const browserSync   = require('browser-sync');
+const runSequence   = require('run-sequence');
+const rollup = require('rollup');
+const uglify = require('rollup-plugin-uglify');
+const minify = require('uglify-es').minify;
+const Promise = require('promise');
+const del = require('del');
 
-var gulp = require('gulp');
-var plugins = require("gulp-load-plugins")({lazy:false});
-var browserSync   = require('browser-sync');
-var runSequence   = require('run-sequence');//タスク直列処理
-var rollup = require('rollup');
-var uglify = require('rollup-plugin-uglify');
-var Promise = require('promise');
-var del = require('del');
-
-var autoprefixer_setting = {
+const autoprefixerSetting = {
   browsers: ['last 2 versions'],
   cascade: false
-}
+};
 
-var dir = {
+const dir = {
   src: 'src',
   dist: 'dist',
   demo: 'demo'
 };
 
-var nSpeech_path = dir.src + '/js/nSpeech.js';
-var nSpeech_dist_path = dir.dist + '/nSpeech.js';
+const nSpeechPath = dir.src + '/js/nSpeech.js';
+const nSpeechDistPath = dir.dist + '/nSpeech.js';
 
 
 gulp.task('sass', function () {
-  return gulp.src([
-    dir.demo + '/sass/**/*.scss'
-  ])
+  return gulp.src( [dir.demo + '/sass/**/*.scss'] )
   .pipe(plugins.sourcemaps.init())
-  .pipe(plugins.sass({outputStyle: 'nested'}).on('error', plugins.sass.logError))
-  .pipe(plugins.autoprefixer(autoprefixer_setting))
+  .pipe(plugins.sass({ outputStyle: 'nested' }).on('error', plugins.sass.logError))
+  .pipe(plugins.autoprefixer(autoprefixerSetting))
   .pipe(plugins.sourcemaps.write())
   .pipe(gulp.dest(dir.demo))
-  .pipe(browserSync.stream())
+  .pipe(browserSync.stream());
 });
 
 
 gulp.task("browser-sync", function () {
   browserSync.init({
-    server: {
-      baseDir: dir.demo + '/' // ルートとなるディレクトリを指定
-    }
+    server: { baseDir: dir.demo + '/' }
   });
 });
 
@@ -51,73 +46,68 @@ gulp.task("reload", function () {
 });
 
 
-gulp.task('watch', function(cb) {
+gulp.task('watch', function (cb) {
 
   runSequence(
     'sass',
     'build',
     'browser-sync',
     function () {
-      gulp.watch([
-        dir.demo + '/**/*.html'
-      ],['reload']);
+      gulp.watch([dir.demo + '/**/*.html'], ['reload']);
 
-      gulp.watch([
-        dir.demo + '/**/*.scss'
-      ],['sass']);
+      gulp.watch([dir.demo + '/**/*.scss'], ['sass']);
 
-      gulp.watch([
-        dir.demo + '/**/*.js'
-      ], ["reload"]);
+      gulp.watch([dir.demo + '/**/*.js'], ["reload"]);
 
       // javascriptの監視
-      gulp.watch([nSpeech_path], ["build"]);
-      gulp.watch([nSpeech_dist_path], ["copy-demo"]);
+      gulp.watch([nSpeechPath], ["build"]);
+      gulp.watch([nSpeechDistPath], ["copy-demo"]);
       return cb;
     }
   );
 });
 
-gulp.task('build', function() {
+gulp.task('build', function () {
   return rollup.rollup({
-    input: nSpeech_path
-  }).then(function(bundle) {
-    var amd = bundle.write({
+    input: nSpeechPath
+  }).then(function (bundle) {
+    const amd = bundle.write({
       file: dir.dist + '/index.amd.js',
       format: "amd"
     });
 
-    var cjs = bundle.write({
+    const cjs = bundle.write({
       file: dir.dist + '/index.js',
       format: "cjs"
     });
 
-    var es = bundle.write({
+    const es = bundle.write({
       file: dir.dist + '/index.es.js',
       format: "es"
     });
 
-    var iife = bundle.write({
+    const iife = bundle.write({
       file: dir.dist + '/nSpeech.js',
       name: 'nSpeech',
       format: 'iife'
     });
 
     return Promise.all([amd, cjs, es, iife]);
+
   });
 });
 
 
-gulp.task('copy-demo', function() {
-  return gulp.src([nSpeech_dist_path])
-  .pipe(gulp.dest(dir.demo + '/js'))
+gulp.task('copy-demo', function () {
+  return gulp.src([nSpeechDistPath])
+  .pipe(gulp.dest(dir.demo + '/js'));
 });
 
-gulp.task('jsmin', function() {
+gulp.task('jsmin', function () {
   return rollup.rollup({
-    input: nSpeech_path,
-    plugins: [uglify({ output: { comments: /^!/ } })]
-  }).then(function(bundle) {
+    input: nSpeechPath,
+    plugins: [uglify( { output: { comments: /^!/ } }, minify )]
+  }).then(function (bundle) {
     return bundle.write({
       file: dir.dist + '/nSpeech.min.js',
       name: 'nSpeech',
@@ -126,18 +116,18 @@ gulp.task('jsmin', function() {
   });
 });
 
-gulp.task('lint', function() {
-  return gulp.src([nSpeech_path])
+gulp.task('lint', function () {
+  return gulp.src([nSpeechPath])
   .pipe(plugins.eslint())
   .pipe(plugins.eslint.format())
   .pipe(plugins.eslint.failAfterError());
 });
 
-gulp.task('clean', function() {
+gulp.task('clean', function () {
   return del(['dist']);
 });
 
-gulp.task('prepublish', function () { return runSequence(['clean', 'build']) });
+gulp.task('prepublish', function () { return runSequence(['clean', 'build']); });
 
 gulp.task('default', ['watch']);
 
