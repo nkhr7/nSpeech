@@ -224,6 +224,9 @@ speech.onstart = (function(){
 Released under the MIT License. See the `LICENSE` file for details
 
 ## Change Log
+##### 2017.10.16 - [v1.0.4](https://github.com/nkhr7/nSpeech/releases/tag/v1.0.4)
+- Linted
+
 ##### 2017.10.11 - [v1.0.3](https://github.com/nkhr7/nSpeech/releases/tag/v1.0.3)
 - playSelection integrate to play.
 - Add change voice options.

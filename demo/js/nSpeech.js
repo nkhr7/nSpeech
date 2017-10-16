@@ -9,16 +9,13 @@ var nSpeech = (function () {
  *
  * Copyright 2017, Koichi Yoshimoto
  *
- * Version: 1.0.3
+ * Version: 1.0.4
  *
  * Licensed under MIT
  *
- * Released on: 2017.10.11
+ * Released on: 2017.10.16
  */
-var nSpeech$1 = function ( _selector, _options ){
-  /* eslint no-undef: "off" */
-  /* eslint no-extra-semi: "off" */
-  /* eslint no-redeclare: "off" */
+function nSpeech ( _selector, _options ){
 
   // unsupported.
   if (typeof SpeechSynthesisUtterance === "undefined") {
@@ -26,18 +23,18 @@ var nSpeech$1 = function ( _selector, _options ){
     return;
   }
 
-  var self = Object.create(nSpeech.prototype);
+  const self = Object.create(nSpeech.prototype);
 
-  var defaultClassName = ".speech";
+  const defaultClassName = ".speech";
 
   // This is HTML class name by used to getElementsByClassName.
-  var selector = (typeof _selector !== "undefined") ? _selector : defaultClassName;
+  let selector = (typeof _selector !== "undefined") ? _selector : defaultClassName;
 
   // speechSynthesis.getVoices
-  var voices = [];
+  let voices = [];
 
   // speechSynthesis
-  var synth  = window.speechSynthesis;
+  const synth  = window.speechSynthesis;
 
 
   // In this case new nSpeech({ volume: 1 })
@@ -64,13 +61,13 @@ var nSpeech$1 = function ( _selector, _options ){
     rate    : 1,
     pitch   : 1,
     text    : "",
-    onboundary : function() { return undefined; },
-    onend      : function() { resetText(); return undefined; },
-    onerror    : function() { return undefined; },
-    onmark     : function() { return undefined; },
-    onpause    : function() { return undefined; },
-    onresume   : function() { return undefined; },
-    onstart    : function() { return undefined; },
+    onboundary : function () { return undefined; },
+    onend      : function () { resetText(); return undefined; },
+    onerror    : function () { return undefined; },
+    onmark     : function () { return undefined; },
+    onpause    : function () { return undefined; },
+    onresume   : function () { return undefined; },
+    onstart    : function () { return undefined; },
     debug   : false
   };
 
@@ -79,13 +76,13 @@ var nSpeech$1 = function ( _selector, _options ){
 
   self.utterance = new window.SpeechSynthesisUtterance();
 
-  var provisionText = "";
+  let provisionText = "";
 
 
   /**
   * Init
   */
-  var init = function () {
+  const init = function () {
 
     self.elements = getElements( selector );
 
@@ -105,7 +102,7 @@ var nSpeech$1 = function ( _selector, _options ){
   * @param  String str
   * @return NodeList
   */
-  var getElements = function ( str ) {
+  const getElements = function ( str ) {
     return document.querySelectorAll ( str );
   };
 
@@ -114,7 +111,7 @@ var nSpeech$1 = function ( _selector, _options ){
   * Set voices from speechSynthesis.getvoices.
   * We can't get voices before window.onbeforeunload.
   */
-  var getSynthVoices = function () {
+  const getSynthVoices = function () {
     // get voices.
     voices = synth.getVoices();
   };
@@ -125,7 +122,7 @@ var nSpeech$1 = function ( _selector, _options ){
   * To merge default options from user options.
   * If after new instance, we can use this function and change the options
   */
-  var setOptions = function ( _options ) {
+  const setOptions = function ( _options ) {
 
     // User denied options.
     if ( typeof _options === "object" ) {
@@ -142,14 +139,14 @@ var nSpeech$1 = function ( _selector, _options ){
   * Default setting is a speechSynthesis voice by the default.
   * If we want to use other language, can change by options.lang.
   */
-  var setOptionVoice = function () {
+  const setOptionVoice = function () {
 
     // This Object is to insert default the language.
-    var defaultVoice = {};
+    let defaultVoice = {};
 
     if ( voices.length > 0 ) {
       // Voices loop
-      for ( var i in voices ) {
+      for ( const i in voices ) {
 
         // If this voice is defined language.
         if ( voices[i].lang === self.options.lang ) {
@@ -178,13 +175,13 @@ var nSpeech$1 = function ( _selector, _options ){
   /**
   * Set message to read text
   */
-  var setMessage = function () {
+  const setMessage = function () {
     // To set message string.
-    var message = formatText ( self.options.text );
+    let message = formatText ( self.options.text );
 
-    var length = self.elements.length;
-    for (var i = 0; i < length; ++i) {
-      var txt;
+    const length = self.elements.length;
+    for (let i = 0; i < length; ++i) {
+      let txt;
 
       if ( self.elements[i].tagName === "INPUT" || self.elements[i].tagName === "TEXTAREA" ) {
         txt = self.elements[i].value;
@@ -204,7 +201,7 @@ var nSpeech$1 = function ( _selector, _options ){
   /**
   * Set Utterance with utteranceOptions.
   */
-  var setUtterance = function () {
+  const setUtterance = function () {
 
     self.utterance.voice      = self.options.voice;
     self.utterance.volume     = self.options.volume;
@@ -228,10 +225,10 @@ var nSpeech$1 = function ( _selector, _options ){
   * @param  String str
   * @return String
   */
-  var formatText = function ( str ) {
+  const formatText = function ( str ) {
 
-    var txt = "";
-    var formatReg = /[\n\r]+|[\s]{2,}/g;
+    let txt = "";
+    const formatReg = /[\n\r]+|[\s]{2,}/g;
 
     if ( typeof str !== "undefined" && typeof str === "string" ) {
 
@@ -247,9 +244,9 @@ var nSpeech$1 = function ( _selector, _options ){
    * Set the override the text selection.
    * @return bool
    */
-  var setSelection = function ( str ) {
+  const setSelection = function () {
 
-    var str = "";
+    let str = "";
 
     // Get the text selection.
     if ( window.getSelection ) {
@@ -276,7 +273,7 @@ var nSpeech$1 = function ( _selector, _options ){
    * Reset utterance.text if this is changed by override the text selection.
    * @return bool
    */
-  var resetText = function () {
+  const resetText = function () {
     if ( provisionText !== "" ) {
       // Restore default text.
       self.utterance.text = provisionText;
@@ -395,12 +392,12 @@ var nSpeech$1 = function ( _selector, _options ){
 
 
   // When getting out a tab.
-  window.onbeforeunload = function() {
+  window.onbeforeunload = function () {
     self.stop();
   };
 
   // Fired when enable getVoices.
-  window.speechSynthesis.onvoiceschanged = function() {
+  window.speechSynthesis.onvoiceschanged = function () {
     init();
   };
 
@@ -408,8 +405,8 @@ var nSpeech$1 = function ( _selector, _options ){
   init();
 
   return self;
-};
+}
 
-return nSpeech$1;
+return nSpeech;
 
 }());
