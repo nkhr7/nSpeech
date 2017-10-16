@@ -137,7 +137,7 @@ gulp.task('clean', function() {
   return del(['dist']);
 });
 
-gulp.task('prepublish', runSequence(['build', 'clean']));
+gulp.task('prepublish', function () { return runSequence(['clean', 'build']) });
 
 gulp.task('default', ['watch']);
 
