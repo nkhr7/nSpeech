@@ -184,7 +184,7 @@ rules:
   no-useless-constructor: error
   no-useless-rename: error
   no-useless-return: error
-  no-var: 'off'
+  no-var: error
   no-console: 'off'
   no-void: error
   no-warning-comments: error
