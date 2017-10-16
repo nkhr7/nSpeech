@@ -20,18 +20,18 @@ export default function nSpeech ( _selector, _options ){
     return;
   }
 
-  var self = Object.create(nSpeech.prototype);
+  const self = Object.create(nSpeech.prototype);
 
-  var defaultClassName = ".speech";
+  const defaultClassName = ".speech";
 
   // This is HTML class name by used to getElementsByClassName.
-  var selector = (typeof _selector !== "undefined") ? _selector : defaultClassName;
+  let selector = (typeof _selector !== "undefined") ? _selector : defaultClassName;
 
   // speechSynthesis.getVoices
-  var voices = [];
+  let voices = [];
 
   // speechSynthesis
-  var synth  = window.speechSynthesis;
+  const synth  = window.speechSynthesis;
 
 
   // In this case new nSpeech({ volume: 1 })
@@ -73,13 +73,13 @@ export default function nSpeech ( _selector, _options ){
 
   self.utterance = new window.SpeechSynthesisUtterance();
 
-  var provisionText = "";
+  let provisionText = "";
 
 
   /**
   * Init
   */
-  var init = function () {
+  const init = function () {
 
     self.elements = getElements( selector );
 
@@ -99,7 +99,7 @@ export default function nSpeech ( _selector, _options ){
   * @param  String str
   * @return NodeList
   */
-  var getElements = function ( str ) {
+  const getElements = function ( str ) {
     return document.querySelectorAll ( str );
   };
 
@@ -108,7 +108,7 @@ export default function nSpeech ( _selector, _options ){
   * Set voices from speechSynthesis.getvoices.
   * We can't get voices before window.onbeforeunload.
   */
-  var getSynthVoices = function () {
+  const getSynthVoices = function () {
     // get voices.
     voices = synth.getVoices();
   };
@@ -119,7 +119,7 @@ export default function nSpeech ( _selector, _options ){
   * To merge default options from user options.
   * If after new instance, we can use this function and change the options
   */
-  var setOptions = function ( _options ) {
+  const setOptions = function ( _options ) {
 
     // User denied options.
     if ( typeof _options === "object" ) {
@@ -136,14 +136,14 @@ export default function nSpeech ( _selector, _options ){
   * Default setting is a speechSynthesis voice by the default.
   * If we want to use other language, can change by options.lang.
   */
-  var setOptionVoice = function () {
+  const setOptionVoice = function () {
 
     // This Object is to insert default the language.
-    var defaultVoice = {};
+    let defaultVoice = {};
 
     if ( voices.length > 0 ) {
       // Voices loop
-      for ( var i in voices ) {
+      for ( const i in voices ) {
 
         // If this voice is defined language.
         if ( voices[i].lang === self.options.lang ) {
@@ -172,13 +172,13 @@ export default function nSpeech ( _selector, _options ){
   /**
   * Set message to read text
   */
-  var setMessage = function () {
+  const setMessage = function () {
     // To set message string.
-    var message = formatText ( self.options.text );
+    let message = formatText ( self.options.text );
 
-    var length = self.elements.length;
-    for (var i = 0; i < length; ++i) {
-      var txt;
+    const length = self.elements.length;
+    for (let i = 0; i < length; ++i) {
+      let txt;
 
       if ( self.elements[i].tagName === "INPUT" || self.elements[i].tagName === "TEXTAREA" ) {
         txt = self.elements[i].value;
@@ -198,7 +198,7 @@ export default function nSpeech ( _selector, _options ){
   /**
   * Set Utterance with utteranceOptions.
   */
-  var setUtterance = function () {
+  const setUtterance = function () {
 
     self.utterance.voice      = self.options.voice;
     self.utterance.volume     = self.options.volume;
@@ -222,10 +222,10 @@ export default function nSpeech ( _selector, _options ){
   * @param  String str
   * @return String
   */
-  var formatText = function ( str ) {
+  const formatText = function ( str ) {
 
-    var txt = "";
-    var formatReg = /[\n\r]+|[\s]{2,}/g;
+    let txt = "";
+    const formatReg = /[\n\r]+|[\s]{2,}/g;
 
     if ( typeof str !== "undefined" && typeof str === "string" ) {
 
@@ -241,9 +241,9 @@ export default function nSpeech ( _selector, _options ){
    * Set the override the text selection.
    * @return bool
    */
-  var setSelection = function () {
+  const setSelection = function () {
 
-    var str = "";
+    let str = "";
 
     // Get the text selection.
     if ( window.getSelection ) {
@@ -270,7 +270,7 @@ export default function nSpeech ( _selector, _options ){
    * Reset utterance.text if this is changed by override the text selection.
    * @return bool
    */
-  var resetText = function () {
+  const resetText = function () {
     if ( provisionText !== "" ) {
       // Restore default text.
       self.utterance.text = provisionText;
