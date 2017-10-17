@@ -6,11 +6,11 @@
  *
  * Copyright 2017, Koichi Yoshimoto
  *
- * Version: 1.0.5
+ * Version: 1.0.6
  *
  * Licensed under MIT
  *
- * Released on: 2017.10.16
+ * Released on: 2017.10.18
  */
 export default function nSpeech ( _selector, _options ){
 

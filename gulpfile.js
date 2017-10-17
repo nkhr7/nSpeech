@@ -1,5 +1,8 @@
 const gulp = require('gulp');
-const plugins = require("gulp-load-plugins")({ lazy:false });
+const plugins = require("gulp-load-plugins")({
+  lazy:false,
+  rename: { 'gulp-if': 'gulpif' }
+});
 const browserSync   = require('browser-sync');
 const runSequence   = require('run-sequence');
 const rollup = require('rollup');
@@ -7,11 +10,6 @@ const uglify = require('rollup-plugin-uglify');
 const minify = require('uglify-es').minify;
 const Promise = require('promise');
 const del = require('del');
-
-const autoprefixerSetting = {
-  browsers: ['last 2 versions'],
-  cascade: false
-};
 
 const dir = {
   src: 'src',
@@ -22,16 +20,7 @@ const dir = {
 const nSpeechPath = dir.src + '/js/nSpeech.js';
 const nSpeechDistPath = dir.dist + '/nSpeech.js';
 
-
-gulp.task('sass', function () {
-  return gulp.src( [dir.demo + '/sass/**/*.scss'] )
-  .pipe(plugins.sourcemaps.init())
-  .pipe(plugins.sass({ outputStyle: 'nested' }).on('error', plugins.sass.logError))
-  .pipe(plugins.autoprefixer(autoprefixerSetting))
-  .pipe(plugins.sourcemaps.write())
-  .pipe(gulp.dest(dir.demo))
-  .pipe(browserSync.stream());
-});
+let publish = false;
 
 
 gulp.task("browser-sync", function () {
@@ -49,19 +38,16 @@ gulp.task("reload", function () {
 gulp.task('watch', function (cb) {
 
   runSequence(
-    'sass',
     'build',
     'browser-sync',
     function () {
       gulp.watch([dir.demo + '/**/*.html'], ['reload']);
 
-      gulp.watch([dir.demo + '/**/*.scss'], ['sass']);
-
       gulp.watch([dir.demo + '/**/*.js'], ["reload"]);
 
       // javascriptの監視
       gulp.watch([nSpeechPath], ["build"]);
-      gulp.watch([nSpeechDistPath], ["copy-demo"]);
+      gulp.watch([nSpeechDistPath], ["copy"]);
       return cb;
     }
   );
@@ -97,23 +83,45 @@ gulp.task('build', function () {
   });
 });
 
-
-gulp.task('copy-demo', function () {
+gulp.task('copy', function () {
   return gulp.src([nSpeechDistPath])
-  .pipe(gulp.dest(dir.demo + '/js'));
+    .pipe(plugins.gulpif(
+      publish,
+        gulp.dest('./'),
+        gulp.dest(dir.demo + '/js')
+    ));
 });
+
+gulp.task('copy-index', function () {
+  return gulp.src([dir.dist + '/index.js'])
+    .pipe(plugins.gulpif(
+      publish,
+        gulp.dest('./')
+    ));
+});
+
 
 gulp.task('jsmin', function () {
   return rollup.rollup({
     input: nSpeechPath,
     plugins: [uglify( { output: { comments: /^!/ } }, minify )]
   }).then(function (bundle) {
+    const path = publish ? '.' : dir.dist;
     return bundle.write({
-      file: dir.dist + '/nSpeech.min.js',
+      file: path + '/nSpeech.min.js',
       name: 'nSpeech',
       format: "iife"
     });
   });
+});
+
+gulp.task('publish-build', function () {
+  publish = true;
+  return runSequence(['copy', 'copy-index', 'jsmin']);
+});
+
+gulp.task('publish-clean', function () {
+  return del(['./nSpeech.js', './nSpeech.min.js', './index.js']);
 });
 
 gulp.task('lint', function () {
@@ -123,11 +131,9 @@ gulp.task('lint', function () {
   .pipe(plugins.eslint.failAfterError());
 });
 
-gulp.task('clean', function () {
-  return del(['dist']);
-});
-
-gulp.task('prepublish', function () { return runSequence(['clean', 'build']); });
+// for npm publish
+gulp.task('prepublish', function () { return runSequence(['publish-build']); });
+gulp.task('publish', function () { return runSequence(['publish-clean']); });
 
 gulp.task('default', ['watch']);
 

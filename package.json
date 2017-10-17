@@ -1,13 +1,15 @@
 {
   "name": "n-speech",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "nSpeech is screen reader javascript library.",
   "main": "dist/index.js",
   "jsnext:main": "dist/index.es.js",
   "files": [
     "README.md",
     "package.json",
-    "dist"
+    "index.js",
+    "nSpeech.js",
+    "nSpeech.min.js"
   ],
   "keywords": [
     "webspeechapi",
@@ -16,7 +18,8 @@
   "homepage": "https://github.com/nkhr7/nSpeech",
   "scripts": {
     "test": "gulp test build",
-    "prepublish": "gulp clean build"
+    "prepublish": "gulp publish-build",
+    "publish": "gulp publish-clean"
   },
   "repository": {
     "type": "git",
@@ -36,15 +39,13 @@
     "del": "^3.0.0",
     "eslint": "^4.8.0",
     "gulp": "^3.9.1",
-    "gulp-autoprefixer": "^4.0.0",
     "gulp-eslint": "^4.0.0",
+    "gulp-if": "^2.0.2",
     "gulp-jslint": "^1.0.10",
     "gulp-load-plugins": "^1.5.0",
     "gulp-notify": "^3.0.0",
     "gulp-plumber": "^1.1.0",
     "gulp-rename": "^1.2.2",
-    "gulp-sass": "^3.1.0",
-    "gulp-sourcemaps": "^2.6.1",
     "gulp-uglify": "^3.0.0",
     "gulp-util": "^3.0.8",
     "gulp-watch": "^4.3.11",
