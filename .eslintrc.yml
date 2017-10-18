@@ -9,7 +9,9 @@ rules:
   array-bracket-newline: error
   array-bracket-spacing: error
   array-callback-return: error
-  array-element-newline: error
+  array-element-newline:
+    - error
+    - minItems: 4
   arrow-body-style: error
   arrow-parens: error
   arrow-spacing: error
@@ -41,7 +43,9 @@ rules:
   consistent-this: error
   curly: error
   default-case: error
-  dot-location: error
+  dot-location:
+    - error
+    - property
   dot-notation:
     - error
     - allowKeywords: true

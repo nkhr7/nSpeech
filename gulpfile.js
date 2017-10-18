@@ -1,3 +1,4 @@
+/* eslint-env node */
 const gulp = require('gulp');
 const plugins = require("gulp-load-plugins")({
   lazy:false,
@@ -24,9 +25,7 @@ let publish = false;
 
 
 gulp.task("browser-sync", function () {
-  browserSync.init({
-    server: { baseDir: dir.demo + '/' }
-  });
+  browserSync.init({ server: { baseDir: dir.demo + '/' } });
 });
 
 
@@ -54,31 +53,35 @@ gulp.task('watch', function (cb) {
 });
 
 gulp.task('build', function () {
-  return rollup.rollup({
-    input: nSpeechPath
-  }).then(function (bundle) {
-    const amd = bundle.write({
-      file: dir.dist + '/index.amd.js',
-      format: "amd"
-    });
+  return rollup.rollup({ input: nSpeechPath })
+    .then(function (bundle) {
+      const amd = bundle.write({
+        file: dir.dist + '/index.amd.js',
+        format: "amd"
+      });
 
-    const cjs = bundle.write({
-      file: dir.dist + '/index.js',
-      format: "cjs"
-    });
+      const cjs = bundle.write({
+        file: dir.dist + '/index.js',
+        format: "cjs"
+      });
 
-    const es = bundle.write({
-      file: dir.dist + '/index.es.js',
-      format: "es"
-    });
+      const es = bundle.write({
+        file: dir.dist + '/index.es.js',
+        format: "es"
+      });
 
-    const iife = bundle.write({
-      file: dir.dist + '/nSpeech.js',
-      name: 'nSpeech',
-      format: 'iife'
-    });
+      const iife = bundle.write({
+        file: dir.dist + '/nSpeech.js',
+        name: 'nSpeech',
+        format: 'iife'
+      });
 
-    return Promise.all([amd, cjs, es, iife]);
+      return Promise.all([
+        amd,
+        cjs,
+        es,
+        iife
+      ]);
 
   });
 });
