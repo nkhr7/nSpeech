@@ -21,8 +21,6 @@ const dir = {
 const nSpeechPath = dir.src + '/js/nSpeech.js';
 const nSpeechDistPath = dir.dist + '/nSpeech.js';
 
-let publish = false;
-
 
 gulp.task("browser-sync", function () {
   browserSync.init({ server: { baseDir: dir.demo + '/' } });
@@ -88,43 +86,20 @@ gulp.task('build', function () {
 
 gulp.task('copy', function () {
   return gulp.src([nSpeechDistPath])
-    .pipe(plugins.gulpif(
-      publish,
-        gulp.dest('./'),
-        gulp.dest(dir.demo + '/js')
-    ));
+    .pipe(gulp.dest(dir.demo + '/js'));
 });
-
-gulp.task('copy-index', function () {
-  return gulp.src([dir.dist + '/index.js'])
-    .pipe(plugins.gulpif(
-      publish,
-        gulp.dest('./')
-    ));
-});
-
 
 gulp.task('jsmin', function () {
   return rollup.rollup({
     input: nSpeechPath,
     plugins: [uglify( { output: { comments: /^!/ } }, minify )]
   }).then(function (bundle) {
-    const path = publish ? '.' : dir.dist;
     return bundle.write({
-      file: path + '/nSpeech.min.js',
+      file: dir.dist + '/nSpeech.min.js',
       name: 'nSpeech',
       format: "iife"
     });
   });
-});
-
-gulp.task('publish-build', function () {
-  publish = true;
-  return runSequence(['copy', 'copy-index', 'jsmin']);
-});
-
-gulp.task('publish-clean', function () {
-  return del(['./nSpeech.js', './nSpeech.min.js', './index.js']);
 });
 
 gulp.task('lint', function () {
@@ -135,8 +110,7 @@ gulp.task('lint', function () {
 });
 
 // for npm publish
-gulp.task('prepublish', function () { return runSequence(['publish-build']); });
-gulp.task('publish', function () { return runSequence(['publish-clean']); });
+gulp.task('prepublish', function () { return runSequence(['build', 'jsmin']); });
 
 gulp.task('default', ['watch']);
 

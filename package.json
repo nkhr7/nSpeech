@@ -1,15 +1,14 @@
 {
   "name": "n-speech",
-  "version": "1.0.6",
+  "version": "1.0.6-b",
   "description": "nSpeech is screen reader javascript library.",
   "main": "dist/index.js",
   "jsnext:main": "dist/index.es.js",
   "files": [
     "README.md",
     "package.json",
-    "index.js",
-    "nSpeech.js",
-    "nSpeech.min.js"
+    "dist",
+    "index.js"
   ],
   "keywords": [
     "webspeechapi",
@@ -18,8 +17,7 @@
   "homepage": "https://github.com/nkhr7/nSpeech",
   "scripts": {
     "test": "gulp test build",
-    "prepublish": "gulp publish-build",
-    "publish": "gulp publish-clean"
+    "prepublish": "gulp prepublish"
   },
   "repository": {
     "type": "git",
