@@ -1,8 +1,8 @@
 # nSpeech [![Build Status](https://travis-ci.org/nkhr7/nSpeech.svg?branch=master)](https://travis-ci.org/nkhr7/nSpeech) [![Dependency Status](https://gemnasium.com/badges/github.com/nkhr7/nSpeech.svg)](https://gemnasium.com/github.com/nkhr7/nSpeech) [![npm version](https://badge.fury.io/js/n-speech.svg)](https://badge.fury.io/js/n-speech) [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 
 
-nSpeech is screen reader library.  
-nSpeechは[Web Speech API](https://developer.mozilla.org/ja/docs/Web/API/Web_Speech_API)を使用した、スクリーンリーダーライブラリです。
+nSpeech is screen reader library (TTS).  
+nSpeechは[Web Speech API](https://developer.mozilla.org/ja/docs/Web/API/Web_Speech_API)を使用した、スクリーンリーダーライブラリです (TTS)。
 
 ## Install
 
@@ -12,21 +12,20 @@ $ npm install n-speech
 
 ## Usage
 
-- The initial options use ".speech" class name.  
-初期値では".speech"を使用します。
+- Include nSpeech.js before `</body>`.  
+`</body>`の前にnSpeech.jsを追加します。
 
 - Please add ".speech" to any tags of the sentence you want to read.  
 読み上げたい文章のタグに".speech"を追加してください。
 
 ```html
+<body>
 <p class="speach">The sentence is read.</p>
 <p class="speach">この文章が読まれます。</p>
 
-```
-- Include nSpeech.js before `</body>`.  
-`</body>`の前にnSpeech.jsを追加します。
+<button type="button" id="play" class="button">Play</button>
+<button type="button" id="pause" class="button">Pause</button>
 
-```html
 <script  src="js/nSpeech.js"></script>
 <script>
   var speech = new nSpeech();
@@ -51,35 +50,38 @@ $ npm install n-speech
 ```javascript
 // In this case is ID.
 // Other case is class and tag. (ex: '.speech', 'p')
-var example_1 = new nSpeech('#example_1', {
-  lang: 'ja-JP'
-});
+var example_id = new nSpeech('#example_id');
 
-var example_2 = new nSpeech('.example_2', {
-  lang: 'ja-JP'
-});
+var example_class = new nSpeech('.example_class');
 
-var example_3 = new nSpeech('p', {
+var example_tag = new nSpeech('p');
+
+var example_option = new nSpeech({ lang: 'ja-JP' });
+
+var example_id_option = new nSpeech('#example_id_option', {
   lang: 'ja-JP'
 });
 ```
 
 ### Override the text selection
-- Able to read the selected text.  
-選択したテキストを読むことができます。
+- Able to read the override selected text by drag.  
+ドラッグで選択したテキストを読むことができます。
 
-```javascript
-var selectedTexts = new nSpeech();
-var play = document.getElementById('play');
-var stop = document.getElementById('stop');
+### Create select with voice list
+- Able to create select with voice list.  
+音声リストを`select`に出力することができます。
 
-play.addEventListener('click', function(){
-  speech.playSelection();
-});
+```html
+<body>
+<select id="voiceSelect"></select>
 
-stop.addEventListener('click', function(){
-  speech.stopSelection();
-});
+<script  src="js/nSpeech.js"></script>
+<script>
+  var speech = new nSpeech({
+    selectId: "voiceSelect" // Create select voice list.
+  });
+</script>
+</body>
 ```
 
 
@@ -87,6 +89,11 @@ stop.addEventListener('click', function(){
 
 - The following options are available.  
 以下のオプションが利用できます。
+
+- `lang` can use the options from (ja-JP) or other selects in this link.  
+`lang`では以下の以下のリンクにあるセレクトの(ja-JP)などが利用できます。  
+[https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis/getVoices](https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis/getVoices)
+
 ```javascript
 // default options
 var options = {
@@ -109,19 +116,23 @@ var options = {
   // Read this text.
   text    : "",
   
-  
+  // Create option elements in this id.
+  selectId      : "",
+
+  // Create this elements in selectId.
+  selectElement : "option",
+
+  // callback methods
   onend   : function() { return undefined; },
   onstart : function() { return undefined; },
   onerror : function() { return undefined; },
   onmark  : function() { return undefined; },
+
+  // Debug mode.
   debug   : false
 };
 var speech = new nSpeech(options);
 ```
-
-- `lang` can use the options from (ja-JP) or other selects in this link.  
-`lang`では以下の以下のリンクにあるセレクトの(ja-JP)などが利用できます。  
-[https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis/getVoices](https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis/getVoices)
 
 
 ## Methods
@@ -152,6 +163,9 @@ speech.stop();
 
 // replace text
 speech.replaceText("Replace text");
+
+// replace voice
+speech.changeVoice("ja-JP");
 
 // change volume
 speech.changeVolume(1);
@@ -210,20 +224,20 @@ speech.onstart = (function(){
 ```
 
 ## Browser
-- Chrome (Latest)
-- Firefox (Latest)
 
-## TODO
-- Heading and some text adds period. (Because reading to flush)  
-見出しやその他文章に句読点をつけたい。(流れるように読んでしまうため)
-
-- Async controller options.  
-コントローラーの処理を非同期的に行う。
+| Chrome | Edge | Firefox (Gecko) | Internet Explorer | Opera | Safari (WebKit) |
+|---|---|---|---|---|---|
+| 33 | (Yes) | 49 (49) | No support | ? | 7 |
 
 ## License
 Released under the MIT License. See the `LICENSE` file for details
 
 ## Change Log
+##### 2017.10.19 - [v1.0.7](https://github.com/nkhr7/nSpeech/releases/tag/v1.0.7)
+- Add change voice method.
+- Add method to create select by voice list.
+- Add method to text adjust. This is that insert to a paragraph in no have period.
+
 ##### 2017.10.16 - [v1.0.4](https://github.com/nkhr7/nSpeech/releases/tag/v1.0.4)
 - Linted
 

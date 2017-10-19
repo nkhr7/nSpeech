@@ -1,9 +1,6 @@
 /* eslint-env node */
 const gulp = require('gulp');
-const plugins = require("gulp-load-plugins")({
-  lazy:false,
-  rename: { 'gulp-if': 'gulpif' }
-});
+const plugins = require("gulp-load-plugins")({ lazy:false });
 const browserSync   = require('browser-sync');
 const runSequence   = require('run-sequence');
 const rollup = require('rollup');
@@ -89,6 +86,10 @@ gulp.task('copy', function () {
     .pipe(gulp.dest(dir.demo + '/js'));
 });
 
+gulp.task('clean', function () {
+    return del(['dist']);
+});
+
 gulp.task('jsmin', function () {
   return rollup.rollup({
     input: nSpeechPath,
@@ -110,7 +111,7 @@ gulp.task('lint', function () {
 });
 
 // for npm publish
-gulp.task('prepublish', function () { return runSequence(['build', 'jsmin']); });
+gulp.task('prepublish', function () { return runSequence('clean', ['build', 'jsmin']); });
 
 gulp.task('default', ['watch']);
 

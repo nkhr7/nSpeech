@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -22,6 +22,9 @@
   <textarea name="text" id="text" cols="30" rows="10"></textarea>
 
   <div class="grid-x grid-margin-x align-bottom">
+    <div class="medium-10 large-3 cell">
+      <select id="voiceSelect"></select>
+    </div>
     <div class="medium-10 large-3 cell">
       <label id="volumeLabel">Volume</label>
 
@@ -84,18 +87,22 @@
 
   $(document).foundation();
 
-  var play = document.getElementById('play');
-  var pause = document.getElementById('pause');
-  var resume = document.getElementById('resume');
-  var stop = document.getElementById('stop');
-  var text = document.getElementById('text');
-  var volume = document.getElementById('volume');
-  var rate = document.getElementById('rate');
-  var pitch = document.getElementById('pitch');
+  var play        = document.getElementById('play');
+  var pause       = document.getElementById('pause');
+  var resume      = document.getElementById('resume');
+  var stop        = document.getElementById('stop');
+  var text        = document.getElementById('text');
+  var voiceSelect = document.getElementById('voiceSelect');
+  var volume      = document.getElementById('volume');
+  var rate        = document.getElementById('rate');
+  var pitch       = document.getElementById('pitch');
 
-  var speech = new nSpeech();
+  var speech = new nSpeech({
+    selectId: "voiceSelect" // Create select voice list.
+  });
 
   play.addEventListener('click', function(){
+    speech.changeVoice(voiceSelect.selectedOptions[0].value);
     speech.changeVolume(volume.value);
     speech.changeRate(rate.value);
     speech.changePitch(pitch.value);

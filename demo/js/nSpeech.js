@@ -9,11 +9,11 @@ var nSpeech = (function () {
  *
  * Copyright 2017, Koichi Yoshimoto
  *
- * Version: 1.0.6
+ * Version: 1.0.7
  *
  * Licensed under MIT
  *
- * Released on: 2017.10.18
+ * Released on: 2017.10.19
  */
 function nSpeech ( _selector, _options ){
 
@@ -47,20 +47,25 @@ function nSpeech ( _selector, _options ){
   /**
   * Default Options
   *
-  * lang      : This is spoken the language. ex: 'en-US'.
-  * voice     : This will insert an object from the voice
-  * volme     : Speech volume.
-  * rate      : Speech rate. Speech gets faster if increase.
-  * pitch     : Speech pitch. Speech gets shrill voice if increase
-  * text      : Read this text.
+  * lang          : This is spoken the language. ex: 'en-US'.
+  * voice         : This will insert an object from the voice
+  * volme         : Speech volume.
+  * rate          : Speech rate. Speech gets faster if increase.
+  * pitch         : Speech pitch. Speech gets shrill voice if increase
+  * text          : Read this text.
+  * selectId      : Create option elements in this id.
+  * selectElement : Create this elements in selectId.
+  * debug         : Debug Mode.
   */
   self.options = {
-    lang    : "",
-    voice   : null,
-    volume  : 1,
-    rate    : 1,
-    pitch   : 1,
-    text    : "",
+    lang          : "",
+    voice         : null,
+    volume        : 1,
+    rate          : 1,
+    pitch         : 1,
+    text          : "",
+    selectId      : "",
+    selectElement : "option",
     onboundary : function () { return undefined; },
     onend      : function () { resetText(); return undefined; },
     onerror    : function () { return undefined; },
@@ -78,7 +83,6 @@ function nSpeech ( _selector, _options ){
 
   let provisionText = "";
 
-
   /**
   * Init
   */
@@ -93,6 +97,7 @@ function nSpeech ( _selector, _options ){
       setOptionVoice();
       setMessage();
       setUtterance();
+      outputVoiceSelect();
     }
   };
 
@@ -135,13 +140,12 @@ function nSpeech ( _selector, _options ){
 
 
   /**
-  * Set option voice
-  * Default setting is a speechSynthesis voice by the default.
-  * If we want to use other language, can change by options.lang.
-  */
-  const setOptionVoice = function () {
-
-    // This Object is to insert default the language.
+   * Default setting is a speechSynthesis voice by the default.
+   * @param  String str Search voice in voice list.
+   * @return Object     Voice object.
+   */
+  const getSelectVoice = function ( str ) {
+    // To set default voice.
     let defaultVoice = {};
 
     if ( voices.length > 0 ) {
@@ -149,11 +153,10 @@ function nSpeech ( _selector, _options ){
       for ( const i in voices ) {
 
         // If this voice is defined language.
-        if ( voices[i].lang === self.options.lang ) {
+        if ( voices[i].lang === str ) {
 
-          // Set options.lang
-          self.options.voice = voices[i];
-          return true;
+          // Return voice object.
+          return voices[i];
 
           // If this voice is the default language.
         } else if ( voices[i].default === true ) {
@@ -164,11 +167,20 @@ function nSpeech ( _selector, _options ){
         }
       }
     }
-
     // If not found the language that you want to get the language,
+    return defaultVoice;
+  };
+
+
+  /**
+  * Set option voice
+  * If we want to use other language, can change by options.lang.
+  */
+  const setOptionVoice = function () {
+
     // set default voice to options.voice
-    self.options.voice = defaultVoice;
-    return false;
+    self.options.voice = getSelectVoice( self.options.lang );
+
   };
 
 
@@ -193,6 +205,7 @@ function nSpeech ( _selector, _options ){
 
       message += formatText ( txt ) + " ";
     }
+
     // Insert message to default text
     self.options.text = message;
   };
@@ -221,19 +234,34 @@ function nSpeech ( _selector, _options ){
 
 
   /**
-  * format period
+  * Replace contiguous spaces and new line to a period.
   * @param  String str
   * @return String
   */
   const formatText = function ( str ) {
-
+    // For set text.
     let txt = "";
-    const formatReg = /[\n\r]+|[\s]{2,}/g;
+    // Regex contiguous spaces and line code.
+    const formatReg = /[\r]+|[\n]+|[\n\r]+|[\s]{2,}/g;
+    // Regex Contiguous periods.
+    let adjustFormatReg = /[. ]{2,}/g;
+    // Replace this text by regex..
+    let replacePeriod = '. ';
+
+    // The voice language is Japanese.
+    if ( self.options.voice.lang === "ja-JP" ) {
+      // Change the period string to japanese.
+      adjustFormatReg = /。{2,}/g;
+      replacePeriod = '。';
+    }
 
     if ( typeof str !== "undefined" && typeof str === "string" ) {
+      // First format
+      // This text exists contiguous periods because of line code and spaces continuous.
+      txt = str.replace(formatReg, replacePeriod).trim();
 
-      txt = str.replace(formatReg, ' ').trim();
-
+      // second format
+      txt = txt.replace(adjustFormatReg, replacePeriod).trim();
     }
 
     return txt;
@@ -262,7 +290,7 @@ function nSpeech ( _selector, _options ){
       provisionText = self.utterance.text;
 
       // Set the text selection.
-      self.utterance.text = str;
+      self.utterance.text = formatText(str);
       return true;
     }
     return false;
@@ -284,6 +312,30 @@ function nSpeech ( _selector, _options ){
 
 
   /**
+   * Create voice list elements by options.selectId,
+   * Default element is option.
+   * Default selectId is empty.
+   */
+  const outputVoiceSelect = function () {
+
+    // If found element by id.
+    if ( document.getElementById(self.options.selectId) ) {
+      for ( let i = 0; i < voices.length; i++ ) {
+
+        const option = document.createElement(self.options.selectElement);
+
+        option.textContent = voices[i].name + " (" + voices[i].lang + ")";
+        option.setAttribute("value", voices[i].lang);
+
+        document.getElementById(self.options.selectId).appendChild(option);
+
+      }
+    }
+
+  };
+
+
+  /**
   * player controllers
   */
   // play
@@ -297,6 +349,8 @@ function nSpeech ( _selector, _options ){
     setSelection();
 
     synth.speak( self.utterance );
+
+    if ( self.options.debug ) { console.log(self.utterance); }
   };
 
   // pause
@@ -322,17 +376,21 @@ function nSpeech ( _selector, _options ){
   self.replaceText = function ( str ) {
     self.utterance.text = str;
   };
+  // This lang is string. ex: 'en-US'.
+  self.changeVoice = function ( lang ) {
+    self.utterance.voice = getSelectVoice(lang);
+  };
 
   self.changeVolume = function ( value ) {
-   self.utterance.volume = value;
+    self.utterance.volume = value;
   };
 
   self.changeRate = function ( value ) {
-   self.utterance.rate = value;
+    self.utterance.rate = value;
   };
 
   self.changePitch = function ( value ) {
-   self.utterance.pitch = value;
+    self.utterance.pitch = value;
   };
 
 
@@ -396,10 +454,11 @@ function nSpeech ( _selector, _options ){
     self.stop();
   };
 
-  // Fired when enable getVoices.
-  window.speechSynthesis.onvoiceschanged = function () {
-    init();
-  };
+
+  if (synth.onvoiceschanged !== undefined) {
+    // Fired when enable getVoices.
+    synth.onvoiceschanged = init;
+  }
 
 
   init();
